@@ -1,13 +1,12 @@
 import turtle
 import random
-colors=["blue","red","yellow","magenta","orange","green","gray","pink","purple","white","GOLD",]
+colors=["blue","red","yellow","magenta","orange","black","green","gray","pink","purple","white","GOLD",]
 turtle.hideturtle()
 turtle.bgcolor("cyan")
-
-turtle.tracer(1,0)
-
-SIZE_X = 800
-SIZE_Y = 500
+SIZE_X= 800
+SIZE_Y= 500
+food=turtle.clone()
+food.penup()
 turtle.setup(SIZE_X+50, SIZE_Y+50)
 triangle = turtle.clone()
 
@@ -22,25 +21,12 @@ triangle.goto(SIZE_X/2,-SIZE_Y/2)
 triangle.hideturtle()
 turtle.penup()
 
-
-CIRCLE_SIZE = 20
-START_LENGTH = 1
-
-
-r = CIRCLE_SIZE/2
-
-min_size_food = 20
-max_size_food = 100
-
-food = turtle.clone()
-x=random.randint(min_size_food , max_size_food)
-food.dot(x)
-
 UP_ARROW = 'Up'
 LEFT_ARROW = 'Left'
 DOWN_ARROW = 'Down'
 RIGHT_ARROW = 'Right'
 TIME_STEP = 100
+START_LENGTH=5
 
 SPACEBAR = 'space'
 
@@ -49,41 +35,32 @@ DOWN = 1
 LEFT = 2
 RIGHT = 3
 
-score_list = []
-pos_list = []
-stamp_list = []
-food_pos = []
-food_stamps = []
-circle = turtle.clone()
-circle.shape("circle")
-
-score = 0
-
-turtle.hideturtle()
-
-for i in range(START_LENGTH):
-    food_pos_x = food.pos()[0]
-    food_pos_y = food.pos()[1]
-    x_pos = circle.pos()[0]
-    y_pos = circle.pos()[1]
-    x_pos += CIRCLE_SIZE
-    my_pos = (x_pos,y_pos)
-    circle.goto(x_pos,y_pos)
-    pos_list.append(my_pos)
-    cstamp = circle.stamp()
-    stamp_list.append(cstamp)
-
-food=turtle.clone()
-food.penup()
 
     
 SQUARE_SIZE= 20
+r = SQUARE_SIZE/2
 food.shape("circle")
 pos_list=[]
+stamp_list=[]
 food_stamps=[]
 food_pos=[]
-x=0
-delay_food = 1000
+Food_size=[]
+circle=turtle.clone()
+circle.shape("circle")
+c=0
+turtle.hideturtle()
+CIRCLE_SIZE = 50
+score = 0
+for i in range (START_LENGTH):
+    food_pos_x=food.pos()[0]
+    food_pos_y=food.pos()[1]
+    x_pos=circle.pos()[0]
+    y_pos=circle.pos()[1]
+    my_pos=(x_pos,y_pos)
+    circle.goto(x_pos,y_pos)
+    pos_list.append(my_pos)
+    cstamp=circle.stamp
+    stamp_list.append(cstamp)
 def make_food():
     global x
     color=random.choice(colors)
@@ -94,57 +71,42 @@ def make_food():
     max_y=int(SIZE_Y/2.5/SQUARE_SIZE)+1
     food_x=random.randint(min_x,max_x)*SQUARE_SIZE
     food_y=random.randint(min_y,max_y)*SQUARE_SIZE
-    food_size=random.randint(20,100)
+    food_size=random.randint(20,90)
     food.goto(food_x,food_y)
     food_pos.append(food.pos())
     food.dot(food_size)
     aliens=food.stamp()
-    food_stamps.append(aliens) 
-    turtle.ontimer(make_food,delay_food)    
-        
-    
-make_food()
+    food_stamps.append(aliens)
+    Food_size.append(food_size)
 
-
+for i in range(20):
+    make_food()
     
-Food_size=20
-check = Food_size/2 + CIRCLE_SIZE/2
-direction = UP
-UP_EDGE = SIZE_Y/2
+direction=UP
+UP_EDGE=SIZE_Y/2
+DOWN_EDGE=-SIZE_Y/2
+LEFT_EDGE = -SIZE_X/2
+RIGHT_EDGE = SIZE_X/2
+
+def down ():
+    global direction
+    if direction== DOWN:
+        print("you pressed down")
 def up():
     global direction
-    if direction != DOWN:
-       direction = UP
-    print('You pressed the up key!')
-    
-
-direction = DOWN
-DOWN_EDGE = -SIZE_Y/2
-def down():
-    global direction
-    if direction != UP:
-        direction = DOWN
-    print('You pressed the down key!')
-
-direction = LEFT
-LEFT_EDGE = -SIZE_X/2
+    if direction == UP:
+        print ("you pressed up")
 def left():
     global direction
-    if direction != RIGHT:
-        direction = LEFT
-    
-    print('You pressed the left key!')
-
-direction = RIGHT
-RIGHT_EDGE = SIZE_X/2
+    if direction== LEFT:
+        print("you pressed left")
 def right():
     global direction
-    if direction != LEFT:
-        direction = RIGHT
-    print('You pressed the right key!')
+    if direction == RIGHT:
+        print("you pressed right")
 
 def move_circle():
-    global score,check,Food_size,CIRCLE_SIZE
+    global score
     my_pos = circle.pos()
     x_pos = my_pos[0]
     y_pos = my_pos[1]
@@ -152,11 +114,8 @@ def move_circle():
     new_x_pos = new_pos[0]
     new_y_pos = new_pos[1]
 
-
-
- 
-    for i in range(len(food_pos)):
-        current_food = food_pos[i]
+    i = 0
+    for current_food in food_pos:
         x_food = current_food[0]
         y_food = current_food[1]
 
@@ -164,7 +123,7 @@ def move_circle():
         check = Food_size[i]/2 + CIRCLE_SIZE/2
         
         if distance <= check:
-            food_ind = food_pos.index((food_pos_x, food_pos_y))
+            food_ind = food_pos.index((x_food, y_food))
             food.clearstamp(food_stamps[food_ind])
             food_pos.pop(food_ind)
             food_stamps.pop(food_ind)
@@ -173,11 +132,11 @@ def move_circle():
 
             turtle.clear()
             score = score +1
-            score_list.append(score)
             turtle.goto(-SIZE_X/2+5, SIZE_Y/2-12)
             turtle.write('score = ' + str(score))
-            
-
+        i = i + 1
+    
+ 
     if new_y_pos >= UP_EDGE:
         print("you hit the upper edge... game over")
         quit()
@@ -191,7 +150,6 @@ def move_circle():
     if new_x_pos >= RIGHT_EDGE:
         print("you hit the right edge... game over")
         quit()
-
 
 
         
@@ -218,59 +176,12 @@ def move_circle():
     pos_list.pop(0)
 
     turtle.ontimer(move_circle,TIME_STEP)
-    if circle.pos()==food_pos:
-        food_ind=food_pos.index(circle.pos())
-        food.clearstamp(food_stamps[food_ind])
-        food_pos.pop(food_ind)
-        food_stamps.pop(food_ind)
-        print("you have eaten the food")    
+  
 move_circle()
 turtle.onkeypress(up, UP_ARROW)
 turtle.onkeypress(down, DOWN_ARROW) 
 turtle.onkeypress(left, LEFT_ARROW)
 turtle.onkeypress(right, RIGHT_ARROW)
 turtle.listen()
-
-
-
-
-
-food_pos = [(100,100), (-100,100), (-100,-100), (100,-100)]
-food_stamps = []
-for a in food_pos:
-    food.goto(a)
-    food_stamp = food.stamp()
-    food_stamps.append(food_stamp)
-
-def eat_food():
-    if circle.pos() in food_pos:
-        food_size=food_pos.index(circle.pos())
-        food.clearstamp(food_stamps[food_size])
-    if CIRCLE_SIZE>=check:
-        print("you have eaten the food!")       
-
-    else:
-        quit()
-
-eat_food()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
