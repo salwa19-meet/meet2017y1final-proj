@@ -1,5 +1,8 @@
 import turtle
 import random
+colors=["blue","red","yellow","magenta","orange","black","green","gray","pink","purple","white","GOLD",]
+turtle.hideturtle()
+turtle.bgcolor("cyan")
 
 turtle.tracer(1,0)
 
@@ -30,9 +33,6 @@ min_size_food = 20
 max_size_food = 100
 
 food = turtle.clone()
-food.shape('circle')
-food_size=[]
-original_size = 20
 x=random.randint(min_size_food , max_size_food)
 food.dot(x)
 
@@ -69,23 +69,43 @@ for i in range(START_LENGTH):
     x_pos += CIRCLE_SIZE
     my_pos = (x_pos,y_pos)
     circle.goto(x_pos,y_pos)
-    pos_list.append(x_pos)
+    pos_list.append(my_pos)
     cstamp = circle.stamp()
     stamp_list.append(cstamp)
 
-def make_food():
-    min_x = -int(SIZE_X/2/CIRCLE_SIZE)+1
-    max_x = int(SIZE_X/2/CIRCLE_SIZE)-1
-    min_y = -int(SIZE_Y/2/CIRCLE_SIZE)+1
-    max_y = int(SIZE_Y/2/CIRCLE_SIZE)-1
+food=turtle.clone()
+food.penup()
 
-    food_x = random.randint(min_x,max_x) *CIRCLE_SIZE
-    food_y = random.randint(min_y,max_y) *CIRCLE_SIZE
+    
+SQUARE_SIZE= 20
+food.shape("circle")
+pos_list=[]
+food_stamps=[]
+food_pos=[]
+x=0
+delay_food = 1000
+def make_food():
+    global x
+    color=random.choice(colors)
+    food.color(color)
+    min_x=-int(SIZE_X/2.5/SQUARE_SIZE)+1
+    max_x=int(SIZE_X/2.5/SQUARE_SIZE)-1
+    min_y=-int(SIZE_Y/2.5/SQUARE_SIZE)-1
+    max_y=int(SIZE_Y/2.5/SQUARE_SIZE)+1
+    food_x=random.randint(min_x,max_x)*SQUARE_SIZE
+    food_y=random.randint(min_y,max_y)*SQUARE_SIZE
+    food_size=random.randint(20,100)
     food.goto(food_x,food_y)
-    k = (food_x,food_y)
-    food_pos.append(k)
-    xfoodx = food.stamp()
-    food_stamps.append(xfoodx)
+    food_pos.append(food.pos())
+    food.dot(food_size)
+    aliens=food.stamp()
+    food_stamps.append(aliens) 
+    turtle.ontimer(make_food,delay_food)    
+        
+    
+make_food()
+
+
     
 
 direction = UP
@@ -138,23 +158,28 @@ def move_circle():
     
     
  
-    global food_stamps, food_pos
-    
-    if ((food_pos_x - x_pos)**2 + (food_pos_y -  y_pos)**2) <= r**2:
-        food_ind = food_pos.index((food_pos_x, food_pos_y))
-        food.clearstamp(food_stamps[food_ind])
-        food_pos.pop(food_ind)
-        food_stamps.pop(food_ind)
-        circle.dot(CIRCLE_SIZE + 10)
-        make_food()
-        print('you have eaten the food')
+    for i in range(len(food_pos)):
+        current_food = food_pos[i]
+        x_food = current_food[0]
+        y_food = current_food[1]
 
-        turtle.clear()
-        score = score +1
-        score_list.append(score)
-        turtle.goto(-SIZE_X/2+5, SIZE_Y/2-12)
-        turtle.write('score = ' + str(score))
+        distance = ((x_food - x_pos)**2 + (y_food - y_pos)**2)**0.5
+        check = Food_size[i]/2 + CIRCLE_SIZE/2
         
+        if distance <= check:
+            food_ind = food_pos.index((food_pos_x, food_pos_y))
+            food.clearstamp(food_stamps[food_ind])
+            food_pos.pop(food_ind)
+            food_stamps.pop(food_ind)
+            circle.dot(CIRCLE_SIZE + 5)
+            print('you have eaten the food')
+
+            turtle.clear()
+            score = score +1
+            score_list.append(score)
+            turtle.goto(-SIZE_X/2+5, SIZE_Y/2-12)
+            turtle.write('score = ' + str(score))
+            
 
     if new_y_pos >= UP_EDGE:
         print("you hit the upper edge... game over")
@@ -195,9 +220,15 @@ def move_circle():
     pos_list.pop(0)
 
     turtle.ontimer(move_circle,TIME_STEP)
+    if circle.pos()==food_pos:
+        food_ind=food_pos.index(circle.pos())
+        food.clearstamp(food_stamps[food_ind])
+        food_pos.pop(food_ind)
+        food_stamps.pop(food_ind)
+        print("you have eaten the food")    
 move_circle()
 turtle.onkeypress(up, UP_ARROW)
-turtle.onkeypress(down, DOWN_ARROW)
+turtle.onkeypress(down, DOWN_ARROW) 
 turtle.onkeypress(left, LEFT_ARROW)
 turtle.onkeypress(right, RIGHT_ARROW)
 turtle.listen()
@@ -205,13 +236,13 @@ turtle.listen()
 
 
 
-make_food()
-##food_pos = [(100,100), (-100,100), (-100,-100), (100,-100)]
-##food_stamps = []
-##for a in food_pos:
-##    food.goto(a)
-##    food_stamp = food.stamp()
-##    food_stamps.append(food_stamp)
+
+food_pos = [(100,100), (-100,100), (-100,-100), (100,-100)]
+food_stamps = []
+for a in food_pos:
+    food.goto(a)
+    food_stamp = food.stamp()
+    food_stamps.append(food_stamp)
 
 
 
