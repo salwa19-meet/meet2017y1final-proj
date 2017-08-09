@@ -65,7 +65,6 @@ cstamp=circle.stamp()
 stamp_list.append(cstamp)
 
 delay_food = 1000
-global direction
 
 # SALWA HAS MY CODE TO DO THIS
 score = 0
@@ -235,5 +234,5 @@ turtle.onkeypress(left, LEFT_ARROW)
 turtle.onkeypress(right, RIGHT_ARROW)
 turtle.listen()
 
-turtle.ontimer(make_food())
+
 
