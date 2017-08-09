@@ -6,8 +6,8 @@ turtle.tracer(1,0)
 colors=["blue","red","yellow","magenta","orange","green","gray","pink","purple","white","GOLD",]
 turtle.hideturtle()
 turtle.bgcolor("cyan")
-SIZE_X= 800
-SIZE_Y= 500
+SIZE_X= 1200
+SIZE_Y= 600
 
 turtle.setup(SIZE_X+50, SIZE_Y+50)
 
@@ -66,19 +66,7 @@ stamp_list.append(cstamp)
 
 delay_food = 1000
 
-# SALWA HAS MY CODE TO DO THIS
 score = 0
-##for i in range(START_LENGTH):
-##    food_pos_x = food.pos()[0]
-##    food_pos_y = food.pos()[1]
-##    x_pos = circle.pos()[0]
-##    y_pos = circle.pos()[1]
-##    x_pos += CIRCLE_SIZE
-##    my_pos = (x_pos,y_pos)
-##    circle.goto(x_pos,y_pos)
-##    pos_list.append(my_pos)
-##    cstamp = circle.stamp()
-##    stamp_list.append(cstamp)
    
 def make_food():
     color=random.choice(colors)
@@ -126,15 +114,10 @@ def right():
     direction = RIGHT
     print('You pressed the right key!')
 
-my_pos = circle.pos()
-pos_list.append(my_pos)
-cstamp = circle.stamp()
-stamp_list.append(cstamp)
 
 
 
 
-# SALWA HAS THIS CODE GO FIND IT
 def eat_food():
     global CIRCLE_SIZE, score
     
@@ -150,10 +133,12 @@ def eat_food():
 
         distance = ((x_food - new_x_pos)**2 + (y_food - new_y_pos)**2)**0.5
         check = Food_size[i]/2 + CIRCLE_SIZE*original_size/2
-        
+        if distance <= check and Food_size[i] >= CIRCLE_SIZE*original_size:
+            quit()
         if distance <= check and Food_size[i] <= CIRCLE_SIZE*original_size:
             eaten_food.append(i)
             make_food()
+
         
     for food_ind in eaten_food:
         food.clearstamp(food_stamps[food_ind])
@@ -169,11 +154,6 @@ def eat_food():
         turtle.goto(-SIZE_X/2+5, SIZE_Y/2-12)
         turtle.write('score = ' + str(score))
 
-    turtle.clear()
-    score = score +1
-    score_list.append(score)
-    turtle.goto(-SIZE_X/2+5, SIZE_Y/2-12)
-    turtle.write('score = ' + str(score))
         
 def move_circle():
     global score
@@ -184,17 +164,17 @@ def move_circle():
    
     
  
-    if new_y_pos >= UP_EDGE:
+    if UP_EDGE - new_y_pos <= CIRCLE_SIZE*original_size/2:
         print("you hit the upper edge... game over")
         quit()
-    if new_y_pos <= DOWN_EDGE:
+    if new_y_pos - DOWN_EDGE <= CIRCLE_SIZE*original_size/2:
         print("you hit the right lower... game over")
         quit()
-    if new_x_pos <= LEFT_EDGE:
+    if new_x_pos - LEFT_EDGE <= CIRCLE_SIZE*original_size/2:
         print("you hit the left edge... game over")
         quit()
 
-    if new_x_pos >= RIGHT_EDGE:
+    if RIGHT_EDGE - new_x_pos <= CIRCLE_SIZE*original_size/2:
         print("you hit the right edge... game over")
         quit()
 
