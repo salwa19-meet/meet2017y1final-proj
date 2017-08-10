@@ -11,9 +11,9 @@ pygame.mixer.music.play(-1)
 
 
 
-colors=["blue","red","yellow","magenta","orange","green","gray","pink","purple","white","GOLD",]
+colors=["blue","red","yellow","cyan","orange","green","gray","pink","purple","GOLD","silver","firebrick","lime","palegreen","darksalmon","mediumspringgreen","crimson","darkslategray","goldenrod","seagreen","maroon","hotpink"]
 turtle.hideturtle()
-turtle.bgcolor("cyan")
+turtle.bgcolor("teal")
 SIZE_X= 1250
 SIZE_Y= 700
 
