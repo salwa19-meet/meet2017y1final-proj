@@ -1,21 +1,19 @@
 
 import turtle
 import random
-turtle.bgcolor("teal")
+import pygame
+
 turtle.tracer(1,0)
 
-
-colors=["red","yellow","cyan","orange","green","gray","pink","purple","white","GOLD","silver","firebrick","lime","palegreen","darksalmon","mediumspringgreen","crimson","darkslategray","goldenrod","seagreen","maroon","hotpink"]
-##=======
-colors=["blue","red","yellow","cyan","orange","green","gray","pink","purple","GOLD","silver","firebrick","lime","palegreen","darksalmon","mediumspringgreen","crimson","darkslategray","goldenrod","seagreen","maroon","hotpink"]
-##>>>>>>> 5de11ad733cc6eb8bac4acad88975c69f8b9fdd2
+colors=["blue","red","yellow","magenta","orange","green","gray","pink","purple","white","GOLD",]
 turtle.hideturtle()
-
-
+turtle.bgcolor("cyan")
 SIZE_X= 1200
+
 SIZE_Y= 600
 
 turtle.setup(SIZE_X+50, SIZE_Y+50)
+
 
 border = turtle.clone()
 border.penup()
@@ -26,13 +24,13 @@ border.goto(-SIZE_X/2,SIZE_Y/2)
 border.goto(-SIZE_X/2,-SIZE_Y/2)
 border.goto(SIZE_X/2,-SIZE_Y/2)
 border.hideturtle()
-top_food=0##
-down_food=1
-left_food =2
-right_food=3
-direction_dictionarry= [] ##
 
+pygame.init()
 
+pygame.mixer.music.load("music.wav")
+
+pygame.mixer.music.play(-1)
+pygame.mixer.music.set_volume(0.3)
 
 turtle.hideturtle()
 turtle.resizemode('user')
@@ -62,18 +60,11 @@ food.shape("circle")
 pos_list=[]
 score_list = []
 stamp_list=[]
-food_turtle_list = []
 food_stamps=[]
 food_pos=[]
 Food_size=[]
 original_size = 20
 r = original_size/2
-
-direction = UP
-UP_EDGE = SIZE_Y/2
-DOWN_EDGE = -SIZE_Y/2
-LEFT_EDGE = -SIZE_X/2
-RIGHT_EDGE = SIZE_X/2
 
 circle=turtle.clone()
 circle.shape("circle")
@@ -91,52 +82,29 @@ score = 0
 def make_food():
     color=random.choice(colors)
     food.color(color)
-    food_turtle_list.append(turtle.clone())
-    food_turtle_list[-1].shape('circle')
-    food_turtle_list[-1].st()
-    random_num= random.randint(0,3)
-    if random_num == top_food:
-        food_turtle_list[-1].goto( random.randint(-SIZE_Y/2 , SIZE_Y/2),UP_EDGE)
-    if random_num == left_food:
-        food_turtle_list[-1].goto(LEFT_EDGE , random.randint(-SIZE_X/2 , SIZE_X/2))
-    if random_num == right_food:
-        food_turtle_list[-1].goto(RIGHT_EDGE , random.randint(-SIZE_X/2 , SIZE_X/2))
-    if random_num == down_food:
-        food_turtle_list[-1].goto(random.randint(-SIZE_Y/2 , SIZE_Y/2),DOWN_EDGE)
-    direction_dictionarry.append(random_num)
-
-        
-##    min_x=-int(SIZE_X/2/original_size)+1
-##    max_x=int(SIZE_X/2/original_size)-1
-##    min_y=-int(SIZE_Y/2/original_size)+1
-##    max_y=int(SIZE_Y/2/original_size)-1
-##    food_x=random.randint(min_x,max_x)*original_size
-##    food_y=random.randint(min_y,max_y)*original_size
+    min_x=-int(SIZE_X/2/original_size)+1
+    max_x=int(SIZE_X/2/original_size)-1
+    min_y=-int(SIZE_Y/2/original_size)+1
+    max_y=int(SIZE_Y/2/original_size)-1
+    food_x=random.randint(min_x,max_x)*original_size
+    food_y=random.randint(min_y,max_y)*original_size
     food_size=random.randint(1,6)*0.25*CIRCLE_SIZE
-##    food.goto(food_x,food_y)
-##    food_pos.append(food.pos())
-    food_turtle_list[-1].shapesize(food_size,food_size,1)
-##    aliens=food.stamp()
-##    food_stamps.append(aliens)
-##    Food_size.append(food_size*original_size)
+    food.goto(food_x,food_y)
+    food_pos.append(food.pos())
+    food.shapesize(food_size,food_size,1)
+    aliens=food.stamp()
+    food_stamps.append(aliens)
+    Food_size.append(food_size*original_size)
 for i in range(10):
     make_food()
 
 
+direction = UP
+UP_EDGE = SIZE_Y/2
+DOWN_EDGE = -SIZE_Y/2
+LEFT_EDGE = -SIZE_X/2
+RIGHT_EDGE = SIZE_X/2
 
-def move_food():
-    for food in food_turtle_list:
-        food_index222 = food_turtle_list.index(food)
-        if direction_dictionarry[food_index222]==top_food:
-            food.goto(food.pos()[0],food.pos()[1]-10)
-        if direction_dictionarry[food_index222]==down_food:
-            food.goto(food.pos()[0],food.pos()[1]+10)
-        if direction_dictionarry[food_index222]==left_food:
-            food.goto(10 + food.pos()[0],food.pos()[1])
-        if direction_dictionarry[food_index222]==right_food:
-            food.goto(10 - food.pos()[0],food.pos()[1])
-
-    
 def up():
     global direction
     direction = UP
@@ -157,26 +125,6 @@ def right():
     direction = RIGHT
     print('You pressed the right key!')
 
-
-def w():
-    global direction
-    direction = W
-    print('You pressed the up key!')
-    
-def s():
-    global direction
-    direction = S
-    print('You pressed the down key!')
-
-def A():
-    global direction
-    direction = A
-    print('You pressed the left key!')
-
-def d():
-    global direction
-    direction = D
-    print('You pressed the right key!')
 
 
 
@@ -209,21 +157,22 @@ def eat_food():
         food_stamps.pop(food_ind)
         Food_size.pop(food_ind)
         CIRCLE_SIZE += 0.1
-        circle.shapesize(CIRCLE_SIZE,CIRCLE_SIZE,1)
+        circle.shapesize(CIRCLE_SIZE,CIRCLE_SIZE,1)        
         print('you have eaten the food')
+
+
 
         turtle.clear()
         score = score +1
-        turtle.goto(-SIZE_X/2+5, SIZE_Y/2-12)
-        turtle.write('score = ' + str(score))
+        turtle.goto(-SIZE_X/2+5, SIZE_Y/2-19)
+        turtle.write('score = ' + str(score),move=False, align="left", font=("Arial", 14, "normal"))
 
-        
+##        pygame.mixer.music.rewind()
 def move_circle():
     global score
     new_pos = circle.pos()
     new_x_pos = new_pos[0]
     new_y_pos = new_pos[1]
-    move_food()
     eaten_food = []
    
     
@@ -243,7 +192,6 @@ def move_circle():
         quit()
 
 
-# CIRCLE_SIZE is the scaling factor and not the actual number of pixels
     step = CIRCLE_SIZE*original_size*0.5
     if direction == RIGHT:
         circle.goto(new_x_pos + step, new_y_pos)
@@ -277,4 +225,6 @@ turtle.onkeypress(down, DOWN_ARROW)
 turtle.onkeypress(left, LEFT_ARROW)
 turtle.onkeypress(right, RIGHT_ARROW)
 turtle.listen()
+
+
 
