@@ -1,13 +1,21 @@
 import turtle
 import random
-turtle.bgcolor("teal")
+import pygame
+
 turtle.tracer(1,0)
+
+pygame.init()
+pygame.mixer.music.load('music.wav')
+pygame.mixer.music.play(-1)
+
+
+
+
 colors=["blue","red","yellow","cyan","orange","green","gray","pink","purple","GOLD","silver","firebrick","lime","palegreen","darksalmon","mediumspringgreen","crimson","darkslategray","goldenrod","seagreen","maroon","hotpink"]
 turtle.hideturtle()
-
-
-SIZE_X= 1200
-SIZE_Y= 600
+turtle.bgcolor("teal")
+SIZE_X= 1250
+SIZE_Y= 700
 
 turtle.setup(SIZE_X+50, SIZE_Y+50)
 
@@ -115,26 +123,6 @@ def right():
     print('You pressed the right key!')
 
 
-def w():
-    global direction
-    direction = W
-    print('You pressed the up key!')
-    
-def s():
-    global direction
-    direction = S
-    print('You pressed the down key!')
-
-def A():
-    global direction
-    direction = A
-    print('You pressed the left key!')
-
-def d():
-    global direction
-    direction = D
-    print('You pressed the right key!')
-
 
 
 
@@ -171,8 +159,8 @@ def eat_food():
 
         turtle.clear()
         score = score +1
-        turtle.goto(-SIZE_X/2+5, SIZE_Y/2-12)
-        turtle.write('score = ' + str(score))
+        turtle.goto(-SIZE_X/2+5, SIZE_Y/2-19)
+        turtle.write('score = ' + str(score),move=False, align="left", font=("Arial", 14, "normal"))
 
         
 def move_circle():
@@ -199,7 +187,7 @@ def move_circle():
         quit()
 
 
-# CIRCLE_SIZE is the scaling factor and not the actual number of pixels
+
     step = CIRCLE_SIZE*original_size*0.5
     if direction == RIGHT:
         circle.goto(new_x_pos + step, new_y_pos)
@@ -234,3 +222,6 @@ turtle.onkeypress(left, LEFT_ARROW)
 turtle.onkeypress(right, RIGHT_ARROW)
 turtle.listen()
 
+
+
+#food_turtle.goto(EDGE_RIGHT, random.ranidit(1,350))
