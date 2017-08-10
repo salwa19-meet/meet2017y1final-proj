@@ -164,8 +164,8 @@ def eat_food():
 
         turtle.clear()
         score = score +1
-        turtle.goto(-SIZE_X/2+5, SIZE_Y/2-12)
-        turtle.write('score = ' + str(score))
+        turtle.goto(-SIZE_X/2+5, SIZE_Y/2-19)
+        turtle.write('score = ' + str(score),move=False, align="left", font=("Arial", 14, "normal"))
 
 ##        pygame.mixer.music.rewind()
 def move_circle():
