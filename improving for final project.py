@@ -224,3 +224,4 @@ turtle.listen()
 
 
 
+#food_turtle.goto(EDGE_RIGHT, random.ranidit(1,350))
