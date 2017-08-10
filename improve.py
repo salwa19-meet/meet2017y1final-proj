@@ -1,11 +1,17 @@
+
 import turtle
 import random
-
+turtle.bgcolor("teal")
 turtle.tracer(1,0)
 
+
 colors=["red","yellow","cyan","orange","green","gray","pink","purple","white","GOLD","silver","firebrick","lime","palegreen","darksalmon","mediumspringgreen","crimson","darkslategray","goldenrod","seagreen","maroon","hotpink"]
+##=======
+colors=["blue","red","yellow","cyan","orange","green","gray","pink","purple","GOLD","silver","firebrick","lime","palegreen","darksalmon","mediumspringgreen","crimson","darkslategray","goldenrod","seagreen","maroon","hotpink"]
+##>>>>>>> 5de11ad733cc6eb8bac4acad88975c69f8b9fdd2
 turtle.hideturtle()
-turtle.bgcolor("royalblue")
+
+
 SIZE_X= 1200
 SIZE_Y= 600
 
