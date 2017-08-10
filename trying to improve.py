@@ -162,9 +162,9 @@ def eat_food():
         pygame.mixer.music.load("crunch.wav")
 
         pygame.mixer.music.play()
-        pygame.mixer.music.load("Pim Poy.wav")
-
-        turtle.ontimer(pygame.mixer.music.play(),2000)
+##        pygame.mixer.music.load("Pim Poy.wav")
+##
+##        turtle.ontimer(pygame.mixer.music.play(),2000)
         
         
         print('you have eaten the food')
